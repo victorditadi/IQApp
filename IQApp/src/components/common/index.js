@@ -5,3 +5,4 @@ export { Header } from './Header';
 export { Input } from './Input';
 export { Spinner } from './Spinner';
 export { ButtonHome } from './ButtonLoginPage';
+export { Base } from './Base';
