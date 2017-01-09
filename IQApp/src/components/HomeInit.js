@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Image, Dimensions, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Container, Content, Icon } from 'native-base';
 import InfoCarousel from './InfoCarousel';
 import { ButtonHome, CardSection } from './common';
+import { Actions } from 'react-native-router-flux';
 
 var width = Dimensions.get('window').width;
 var height = Dimensions.get('window').height;
@@ -15,11 +16,11 @@ const styles = {
     },
     fundoScreen: {
         flex: 3,
-        backgroundColor: '#715696'
+        // backgroundColor: '#715696'
     },
     fundoButton: {
-        flex: 0.4,
-        backgroundColor: '#603C8F',
+        flex: 0.3,
+        // backgroundColor: '#603C8F',
         flexDirection: 'row'
     }
 };
@@ -30,17 +31,26 @@ class HomeInit extends Component {
 
     constructor(props) {
         super(props);
-        carousel = <InfoCarousel />
-        this.state = { carousel: carousel } ;
-    }
+        this.state = { carousel: <InfoCarousel />, statusLogin: '' };
 
+        AsyncStorage.getItem("isLogin").then((response) => {
+          this.setState({"statusLogin": response});
+        }).done( () => {
+          console.log('STATUS LOGIN -> '+this.state.statusLogin);
+          if(this.state.statusLogin === "true") Actions.main();
+        });
+    }
+    
+    onPressButton(){
+      Actions.login();
+    }
 
     render(){
     return (
-        <View style = {{flex: 1, backgroundColor: '#715696'}}>
-            <View style = {fundoLogo}>
+        <View style = {{flex: 1}}>
+            {/* <View style = {fundoLogo}>
                 <Image source={require('../assets/img/logo-iqmail.png')} />
-            </View>
+            </View> */}
             <View style = {fundoScreen}>
                 {this.state.carousel}
             </View>
@@ -48,7 +58,7 @@ class HomeInit extends Component {
               {/* <ButtonHome color='#3D3C3C'>
                 Cadastrar
               </ButtonHome> */}
-              <ButtonHome color='#3D3C3C'>
+              <ButtonHome color='#3D3C3C' onPress={() => this.onPressButton(this)}>
                 Login
               </ButtonHome>
             </View>

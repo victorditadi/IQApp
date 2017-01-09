@@ -35,7 +35,7 @@ const styles = {
     color: 'whitesmoke'
   },
   containerStyle: {
-    backgroundColor: "#592b7d",
+    backgroundColor: "gray",
     height: 40,
     flex: 1,
     flexDirection: 'row',

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, Dimensions, Linking, AsyncStorage } from 'react-native';
-import firebase from 'firebase';
+import { Text, View, Linking, AsyncStorage } from 'react-native';
 import { ButtonForm, Card, CardSection, Input, Spinner, ButtonHome } from './common';
 import axios from 'axios';
+import { Actions } from 'react-native-router-flux';
 
-var height = Dimensions.get('window').height;
 
 class LoginForm extends Component {
 
@@ -15,40 +14,48 @@ class LoginForm extends Component {
 
     this.setState({ error: '', loading: true });
 
-    axios.get('http://52.90.199.18/login', {
+    axios.get('http://52.7.254.69/cliente/appMobile/index.php', {
       params: {
         login: email,
-        pass: password
+        password: password
         }
       })
         .then(response => this.onLoginSucess(response.data));
-
-
-    // firebase.auth().signInWithEmailAndPassword(email, password)
-    //   .then(this.onLoginSucess.bind(this))
-    //   .catch(() => {
-    //     firebase.auth().createUserWithEmailAndPassword(email, password)
-    //       .then(this.onLoginSucess.bind(this))
-    //       .catch(this.onLoginFail.bind(this));
-    //   });
   }
 
   onLoginSucess(resposta) {
-    if(resposta == 'OK')
+    // console.log(resposta);
+
+    // A FAZER ERROR LOGIN
+      if(resposta[0] == "LoginError"){
+        Actions.homeInit();
+        console.log("Error ao Logar");
+      }
+
+    else
     {
       this.setState({
         email: '',
         password: '',
         loading: false,
         error: '',
-    });
-    AsyncStorage.setItem("isLogin", yes);
+      });
+
+    AsyncStorage.setItem("isLogin", true.toString());
+    AsyncStorage.setItem("cliente_hash", resposta.password);
+    AsyncStorage.setItem("cliente_id", resposta.cliente_id);
+
+
+    Actions.main();
+
+
+
 
   }
 }
 
   onLoginFail() {
-    this.setState({ error: 'Erro ao criar a conta', loading: false });
+    this.setState({ error: 'Erro ao logar', loading: false });
   }
 
   renderButton() {
@@ -65,41 +72,33 @@ class LoginForm extends Component {
 
     render() {
       return (
-        <View>
-          <View style={{marginBottom: height * 0.25}}>
+        <View style={{flex:1}}>
+
+          <View style={{flex: 3, marginTop: 100, justifyContent:'center'}}>
             <Card>
               <CardSection>
                 <Input
-                    label="Email"
-                    placeholder="user@gmail.com"
-                    value={this.state.email}
-                    onChangeText={email => this.setState({ email })}
-                />
+                  label="Email"
+                  placeholder="user@gmail.com"
+                  value={this.state.email}
+                  onChangeText={email => this.setState({email})}
+                   />
               </CardSection>
-
               <CardSection>
                 <Input
-                    label="Senha"
-                    placeholder="****"
-                    value={this.state.password}
-                    secure={true}
-                    onChangeText={password => this.setState({ password })}
-                />
+                  label="Senha"
+                  placeholder="****"
+                  secure
+                  value={this.state.password}
+                  onChangeText={password => this.setState({password})}
+                   />
               </CardSection>
+            </Card>
+          </View>
 
-              <Text style={styles.errorTextStyle}>
-                {this.state.error}
-              </Text>
-
-              <Text onPress={() => Linking.openURL('http://www.iqmail.com.br/landings/relacionamento/')} style={styles.cadastroText}>
-                Clique aqui para criar um cadastro.
-              </Text>
-          </Card>
-
-        </View>
-        <View style = {styles.fundoButton}>
-          {this.renderButton()}
-        </View>
+          <View style={{flex: 0.33, flexDirection: 'row'}}>
+            {this.renderButton()}
+          </View>
         </View>
       );
     }

@@ -12,11 +12,11 @@ const Styles = {
   },
   iconStyle: {
     fontSize: 130,
-    color: 'white'
+    color: '#737373'
   },
   textStyle: {
     fontSize: 16,
-    color: 'white',
+    color: '#737373',
     margin: 20,
     textAlign: 'center'
   }
@@ -47,7 +47,6 @@ export default class InfoCarousel extends Component {
                     autoplay = {true}
                     pageInfo = {false}
                     bullets  = {true}
-                    onAnimateNextPage={(p) => console.log(p)}
                 >
                     <View style={viewStyle}>
                         <Icon name='ios-mail' style={iconStyle}/>
