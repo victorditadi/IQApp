@@ -28,7 +28,7 @@ class SplashScreen extends Component {
       this.state.done ? ({ ...this.props.children })
       :
       (
-        <Image source={require('../assets/img/fundo_2.jpg')} style={styles.splashScreen} />
+        <Image source={require('../../assets/img/fundo_2.jpg')} style={styles.splashScreen} />
         // <Text style={styles.splashScreen}>
         //   <Text style={styles.texto}>
         //     Bem Vindo ao IQMail
@@ -49,4 +49,4 @@ const styles = {
  }
 };
 
-export default SplashScreen;
+export { SplashScreen };

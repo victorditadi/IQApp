@@ -1,11 +1,13 @@
-'use strict';
 import React, { Component } from 'react';
-import { View, ScrollView, AsyncStorage } from 'react-native';
+import { View, ScrollView, AsyncStorage, RefreshControl, Text } from 'react-native';
 import axios from 'axios';
-import NotificacoesDetalhes from './NotificacoesDetalhes';
+import { NotificacoesDetalhes } from './index';
+import { ButtonHome } from '../common';
+import { Icon, Button } from 'native-base';
+
 
 class NotificacoesLista extends Component {
-  state = { notificacoesLista: [] };
+  state = { notificacoesLista: [], isRefreshing: false};
 
   componentWillMount()
   {
@@ -48,14 +50,28 @@ class NotificacoesLista extends Component {
     );
   }
 
+
+  _onRefresh(){
+    setTimeout(() => {
+        this.carregarNotificacoes();
+      }, 1000);
+  }
+
+
   render(){
-    console.log("EXECUTEI RENDER");
     return (
-      <ScrollView>
+      <ScrollView style={{flex:1, backgroundColor: '#e6e6e6'}}
+        refreshControl={
+          <RefreshControl
+                refreshing={this.state.isRefreshing}
+                onRefresh={this._onRefresh.bind(this)}
+                tintColor="#715696"
+                />
+            }>
         {this.renderNotificacao()}
       </ScrollView>
     );
   }
 }
 
-export default NotificacoesLista;
+export { NotificacoesLista };

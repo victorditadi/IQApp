@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, Linking } from 'react-native';
 import { Icon, Button } from 'native-base';
-import { Card, CardSection, ButtonForm } from './common';
+import { Card, CardSection, ButtonForm } from '../common';
 import { Actions } from 'react-native-router-flux';
 import axios from 'axios';
 
@@ -112,12 +112,12 @@ const styles = {
   containerStyle:{
     borderBottomWidth: 1,
     padding: 5,
-    backgroundColor: "whitesmoke",
+    backgroundColor: "#f2f2f2",
     justifyContent: 'flex-start',
     flexDirection: 'row',
-    borderColor: 'gray',
+    borderColor: '#cccccc',
     position: 'relative'
   }
 }
 
-export default NotificacoesDetalhes;
+export  { NotificacoesDetalhes };

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, Linking, AsyncStorage } from 'react-native';
-import { ButtonForm, Card, CardSection, Input, Spinner, ButtonHome } from './common';
+import { Text, View, Linking, AsyncStorage, Image } from 'react-native';
+import { ButtonForm, Card, CardSection, Input, Spinner, ButtonHome } from '../common';
 import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
 
 
-class LoginForm extends Component {
+class LoginScreen extends Component {
 
   state = { email: '', password: '', error: '', loading: false, user: '' } ;
 
@@ -28,8 +28,13 @@ class LoginForm extends Component {
 
     // A FAZER ERROR LOGIN
       if(resposta[0] == "LoginError"){
-        Actions.homeInit();
-        console.log("Error ao Logar");
+        console.log(resposta[0]);
+        this.setState({
+          email: '',
+          password: '',
+          loading: false,
+          error: 'Usuário ou Senha incorretos',
+        });
       }
 
     else
@@ -44,7 +49,7 @@ class LoginForm extends Component {
     AsyncStorage.setItem("isLogin", true.toString());
     AsyncStorage.setItem("cliente_hash", resposta.password);
     AsyncStorage.setItem("cliente_id", resposta.cliente_id);
-
+    AsyncStorage.setItem("cliente_nome", resposta.nome);
 
     Actions.main();
 
@@ -72,9 +77,11 @@ class LoginForm extends Component {
 
     render() {
       return (
-        <View style={{flex:1}}>
-
-          <View style={{flex: 3, marginTop: 100, justifyContent:'center'}}>
+        <View style = {{flex: 1, backgroundColor: '#715696'}}>
+          <View style = {styles.fundoLogo}>
+              <Image source={require('../../assets/img/logo-iqmail.png')} />
+          </View>
+          <View style={{flex: 3, justifyContent:'center'}}>
             <Card>
               <CardSection>
                 <Input
@@ -93,10 +100,11 @@ class LoginForm extends Component {
                   onChangeText={password => this.setState({password})}
                    />
               </CardSection>
+              <Text style={styles.errorTextStyle}>{this.state.error}</Text>
             </Card>
           </View>
 
-          <View style={{flex: 0.33, flexDirection: 'row'}}>
+          <View style={{flex: 0.4, flexDirection: 'row'}}>
             {this.renderButton()}
           </View>
         </View>
@@ -106,7 +114,8 @@ class LoginForm extends Component {
 
 const styles = {
   errorTextStyle: {
-    fontSize: 20,
+    marginTop: 5,
+    fontSize: 15,
     alignSelf: 'center',
     color: 'red'
   },
@@ -117,7 +126,13 @@ const styles = {
   cadastroText: {
     alignSelf: 'center',
     color: 'white'
+  },
+  fundoLogo: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#715696'
   }
 };
 
-export default LoginForm;
+export { LoginScreen };

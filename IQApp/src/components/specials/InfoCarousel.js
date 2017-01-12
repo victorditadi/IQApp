@@ -12,18 +12,18 @@ const Styles = {
   },
   iconStyle: {
     fontSize: 130,
-    color: '#737373'
+    color: 'whitesmoke'
   },
   textStyle: {
     fontSize: 16,
-    color: '#737373',
+    color: 'whitesmoke',
     margin: 20,
     textAlign: 'center'
   }
 }
 const { viewStyle, iconStyle, textStyle } = Styles;
 
-export default class InfoCarousel extends Component {
+class InfoCarousel extends Component {
 
     constructor(props) {
         super(props);
@@ -78,3 +78,5 @@ export default class InfoCarousel extends Component {
         );
     }
 }
+
+export { InfoCarousel }
