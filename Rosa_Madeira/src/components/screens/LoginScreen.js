@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, Image, Text } from 'react-native';
-import { ButtonForm, Card, CardSection, Input, Spinner, ButtonHome } from './common';
+import { ButtonForm, Card, CardSection, Input, Spinner, ButtonHome } from '../common';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser } from '../actions';
+import { emailChanged, passwordChanged, loginUser } from '../../actions';
 
 class LoginForm extends Component {
 
@@ -23,11 +23,24 @@ class LoginForm extends Component {
     this.props.loginUser({email, password});
   }
 
+  renderContent(){
+    if(this.props.loading) {
+      return <Spinner size='large' />;
+    }
+      return(
+        <ButtonHome color='#3D3C3C' onPress={this.onLoginPress.bind(this)}>
+            Entrar
+        </ButtonHome>
+      );
+  }
+
   render() {
     return(
-      <View style = {{flex: 1, backgroundColor: '#715696'}}>
+      <View style = {{flex: 1, backgroundColor: '#d0bda8'}}>
         <View style = {styles.fundoLogo}>
-            <Image source={require('../assets/img/logo-iqmail.png')} />
+            {/* <Image source={require('../../assets/img/logo-iqmail.png')} /> */}
+            <Text style={{color: 'white', fontSize: 40}}>Rosa Madeira</Text>
+
         </View>
         <View style={{flex: 3, justifyContent:'center'}}>
           <Card>
@@ -48,13 +61,11 @@ class LoginForm extends Component {
                 onChangeText={this.onPasswordChange.bind(this)}
                  />
             </CardSection>
-            <Text style={styles.errorTextStyle}></Text>
+            <Text style={styles.errorTextStyle}>{this.props.error}</Text>
             </Card>
         </View>
         <View style={{flex: 0.4, flexDirection: 'row'}}>
-          <ButtonHome color='#3D3C3C' onPress={this.onLoginPress.bind(this)}>
-              Entrar
-          </ButtonHome>
+          {this.renderContent()}
         </View>
       </View>
     );
@@ -63,10 +74,10 @@ class LoginForm extends Component {
 
 const styles = {
   errorTextStyle: {
-    marginTop: 5,
+    marginTop: 6,
     fontSize: 15,
     alignSelf: 'center',
-    color: 'red'
+    color: 'white'
   },
   fundoButton: {
       backgroundColor: '#3D3C3C',
@@ -80,15 +91,14 @@ const styles = {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#715696'
+      backgroundColor: '#d0bda8'
   }
 };
 
-const mapStateToProps = state => {
-  return {
-    email: state.auth.email,
-    password: state.auth.password
-  };
+const mapStateToProps = ({ auth }) => {
+  const { email, password, error, loading, user } = auth;
+
+  return { email, password, error, loading, user };
 };
 
 export default connect(mapStateToProps, {

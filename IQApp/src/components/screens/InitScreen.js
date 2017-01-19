@@ -37,7 +37,6 @@ class InitScreen extends Component {
         AsyncStorage.getItem("isLogin").then((response) => {
           this.setState({"statusLogin": response});
         }).done( () => {
-          console.log('STATUS LOGIN -> '+this.state.statusLogin);
           if(this.state.statusLogin === "true") Actions.main();
         });
     }
